@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#echo "Enter your Name here: "
+#read USER
+#echo "user name is $USER "
+
+read -p "Enter your Name: "  myname
+echo "user name is $myname "

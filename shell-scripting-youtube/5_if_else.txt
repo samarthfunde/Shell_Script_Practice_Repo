@@ -1,0 +1,10 @@
+#/bin/bash
+
+read -p "Enter Your Age Number: " AGE 
+
+if [[ $AGE -ge 18 ]]
+then
+   echo "You Are Eligible for Vote "
+else
+   echo "You Are No Eligible for Vote" 
+fi
