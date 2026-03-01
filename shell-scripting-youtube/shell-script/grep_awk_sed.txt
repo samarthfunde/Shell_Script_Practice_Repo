@@ -1,0 +1,219 @@
+1️⃣ Command substitution
+    date=$(date)
+
+2️⃣ Exit status ($?)
+    if [ $? -eq 0 ]
+
+3️⃣ Cron job basics
+    crontab -e
+
+4️⃣ Grep, awk, sed (VERY IMPORTANT 🔥)
+    grep "ERROR" logfile.txt
+
+5️⃣ Process handling
+   ps -ef  # process status... It shows running processes in Linux.  -e means: Show all processes in the system Not just your user’s processes, What is -f ? - Full format listing
+   ✅ So ps -ef means:  Show all running processes in full detailed format.
+   kill -9 PID
+   ps aux -  ps aux shows all running processes with detailed info
+   top - top shows live running processes in real-time, CPU usage, Memory usage, Load average, Running processes, Process using highest CPU, Check which process is consuming high CPU or RAM
+   
+   ps aux → Shows all running processes in detailed format.
+   top → Displays live system performance and processes.
+   htop → Improved interactive version of top with better UI.
+   
+
+6️⃣ Service check script (Real DevOps Example)
+   if systemctl is-active --quiet nginx
+   then
+       echo "Nginx is running"
+   else
+       echo "Nginx is stopped"
+   fi
+
+7️⃣ Simple automation script example
+    Check disk usage
+    Check RAM usage
+    Restart service if stopped
+    Send alert (echo/mail)
+
+...................................................
+
+
+
+1️⃣ grep (Global Regular Expression Print)
+   Used to search text inside files
+   
+   Structure of sed replace command
+   sed 's/old/new/flags' file
+   s means substitute - “Replace something with something else.” s/replace/word/
+   
+   What is g ? - g means global - Replace ALL occurrences in that line
+   Example Without g
+   File content:
+        docker docker docker
+   Command:
+        sed 's/docker/k8s/' file.txt
+   Output:
+        k8s docker docker
+   ⚠ Only first occurrence replaced.
+
+  Example With g
+       sed 's/docker/k8s/g' file.txt
+  Output:
+       k8s k8s k8s
+  Now all occurrences replaced.
+
+| Symbol | Meaning                          |
+| ------ | -------------------------------- |
+| `s`    | Substitute (replace)             |
+| `g`    | Global (all occurrences in line) |
+
+
+Example file: app.log
+   INFO Server started
+   ERROR Database connection failed
+   INFO User logged in
+   ERROR Timeout occurred
+
+✅ Example 1: Find ERROR lines
+    grep "ERROR" app.log
+    Output:
+    ERROR Database connection failed
+    ERROR Timeout occurred
+
+✅ Example 2: Ignore case
+    grep -i "error" app.log
+
+✅ Example 3: Count errors
+    grep -c "ERROR" app.log
+    Output:
+    2
+
+
+2️⃣ awk (Pattern scanning & processing)
+    Used for column-wise processing
+    
+Example file: users.txt
+    sam 5000
+    rahul 7000
+    amit 6000
+
+✅ Print first column
+    awk '{print $1}' users.txt
+    Output:
+    sam
+    rahul
+    amit
+
+✅ Print users with salary > 6000
+   awk '$2 > 6000 {print $1}' users.txt
+   Output:
+   rahul
+
+🔥 DevOps Use:
+    Parse CPU usage
+    Extract specific column from command output
+    Work with df -h, ps -ef
+
+Example:
+    df -h | awk '{print $5}'
+
+3️⃣ sed (Stream Editor)
+    Used to replace or modify text
+
+Example file: file.txt
+    I love docker
+    docker is powerful
+
+✅ Replace docker with Kubernetes 
+    sed 's/docker/Kubernetes/' file.txt
+
+Output:
+   I love Kubernetes
+   docker is powerful
+⚠ Only first occurrence per line changes.
+
+✅ Replace all occurrences
+sed 's/docker/Kubernetes/g' file.txt
+
+✅ Replace inside file permanently
+sed -i 's/docker/Kubernetes/g' file.txt
+
+What is -i ? -i means in-place editing
+Without -i:
+   sed 's/docker/Kubernetes/g' file.txt  - It will only print output on screen. Original file will NOT change.
+
+With -i:
+   sed -i 's/docker/Kubernetes/g' file.txt  ..... It modifies the file directly.
+
+🔥 DevOps Use:
+   Update config files
+   Modify environment variables
+   Change version numbers in deployment files
+
+4️⃣ What is $?
+👉 $? stores exit status of last executed command
+
+Every Linux command returns:
+0 → Success ✅
+Non-zero (1,2,127 etc.) → Failure ❌
+
+Example 1:
+   mkdir test
+   echo $?
+
+Output:
+   0
+   
+Means command successful.
+
+Example 2:
+   mkdir test
+   mkdir test
+   echo $?
+   
+Second time output:
+   1
+Because directory already exists → error.
+
+
+Real DevOps Example Using $?
+
+    systemctl restart nginx
+    if [ $? -eq 0 ]
+    then
+    echo "Nginx restarted successfully"
+    else
+    echo "Failed to restart nginx"
+    fi
+    
+🔥 This is very common interview question.
+
+
+Simple Summary
+| Command | Used For                       |
+| ------- | ------------------------------ |
+| grep    | Search text                    |
+| awk     | Work with columns              |
+| sed     | Replace / edit text            |
+| $?      | Check previous command success |
+
+For DevOps Interview
+    How to find ERROR in log?
+    How to extract 5th column from df -h?
+    How to replace value in config file?
+    How to check if service restart was successful?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
